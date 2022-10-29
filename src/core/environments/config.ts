@@ -16,4 +16,5 @@ export = {
 	NODE_ENV: process.env.NODE_ENV || "development",
 	HOST: process.env.HOST || "localhost",
 	PORT: process.env.PORT || 5000,
+	MONGODB_CONNECT: process.env.MONGODB_CONNECT,
 };
