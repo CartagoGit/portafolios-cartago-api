@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthorModel } from "../../models/author.model";
-import { getModelByArgs, INameModel } from "./crud-base.controller";
+import { deleteAllCollectionModel, getModelByArgs, INameModel } from "./crud-base.controller";
 import {
 	createNewModel,
 	getAllModel,
@@ -30,8 +30,8 @@ export const getAllAuthors = async (req: Request, res: Response) => {
 export const getAuthorById = async (req: Request, res: Response) => {
 	await getModelById(Model, req, res, nameModel);
 };
-//? GET - Recuperar autores que contengan en su Nombre
-export const getAuthorsByName = async (req: Request, res: Response) => {
+//? GET - Recuperar autores que contengan el Argumento de la query
+export const getAuthorsByArgs = async (req: Request, res: Response) => {
 	getModelByArgs(Model, req, res, nameModel);
 };
 
@@ -44,3 +44,8 @@ export const updateAuthor = async (req: Request, res: Response) => {
 export const deleteAuthor = async (req: Request, res: Response) => {
 	await deleteModel(Model, req, res, nameModel);
 };
+
+//! DELETE - Elimina la coleccion entera - CUIDADO DE USAR
+export const deleteAllCollectionAuthor = async (req: Request, res: Response) => {
+	await deleteAllCollectionModel(Model, req, res, nameModel);
+}

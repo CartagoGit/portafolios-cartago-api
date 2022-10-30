@@ -6,7 +6,8 @@ import {
 	getAuthorById,
 	updateAuthor,
 	deleteAuthor,
-	getAuthorsByName,
+	getAuthorsByArgs,
+	deleteAllCollectionAuthor,
 } from "../controllers/author.controller";
 
 const router = Router();
@@ -18,9 +19,12 @@ router.get("/test", testController);
 router.post("/new-author", newAuthor);
 router.get("/get-all-authors", getAllAuthors);
 router.get("/get-author-by-id/:id", getAuthorById);
-router.get("/get-authors-by-name", getAuthorsByName);
+router.get("/get-authors-by-name", getAuthorsByArgs);
 router.put("/update-author/:id", updateAuthor);
 router.patch("/update-author/:id", updateAuthor);
 router.delete("/delete-author/:id", deleteAuthor);
+
+//! CUIDADO DE USAR
+router.delete("/delete-all-collection", deleteAllCollectionAuthor);
 
 export const authorsRoutes = router;

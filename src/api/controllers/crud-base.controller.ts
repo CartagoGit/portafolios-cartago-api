@@ -1,5 +1,4 @@
 import { Response, Request } from "express";
-import { mergeDeep } from "../../helpers/mergeDeep.helper";
 import {
 	getError,
 	handleErrorAddedOrUpdatedModified,
@@ -89,7 +88,13 @@ export const getModelById = async (
 		//? Buscamos el elemento por su id
 		const id = req.params.id;
 		const result = await Model.findById(id).exec();
-
+		if (!result)
+			throw new Error(
+				"No se ha encontrado ningun " +
+					nameModel.en_singular +
+					" con la id : " +
+					id
+			);
 		//? Respuestas
 		res.status(201).json({
 			ok: true,
@@ -237,6 +242,33 @@ export const deleteModel = async (
 			res,
 			error,
 			`Ha habido un problema al intentar eliminar el ${nameModel.es_singular} con id: ${id}.`
+		);
+	}
+};
+
+//! DELETE - Elimina la coleccion del modelo entera - CUIDADO DE USAR
+
+export const deleteAllCollectionModel = async (
+	ModelRecived: any,
+	_req: Request,
+	res: Response,
+	nameModel: INameModel
+) => {
+	try {
+		//! Eliminamos toda la coleccion del modelo
+		const result = await ModelRecived.collection.drop();
+
+		//? Respuestas
+		res.status(201).json({
+			ok: true,
+			collection: result,
+			msg: "Se ha eliminado la colección de " + nameModel.es_plural,
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			`Ha habido un problema al intentar eliminar la colección de ${nameModel.es_plural}.`
 		);
 	}
 };
