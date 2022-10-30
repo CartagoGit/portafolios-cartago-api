@@ -1,22 +1,27 @@
 import { Request, Response } from "express";
-import { getError } from "../../helpers/response.helper";
+import {
+	handleErrorAddedOrUpdatedModified,
+	getError,
+	createNewModel,
+	updateModel,
+} from "../../helpers/response.helper";
 import { AuthorModel } from "../../models/author.model";
 
 //? POST - Crear Autor
 export const newAuthor = async (req: Request, res: Response): Promise<void> => {
 	try {
+		//? Comprobamos que no se pase ninguna fecha directamente por el body, que se cree automaticamente
+		handleErrorAddedOrUpdatedModified(req);
+
 		//? Guardamos el autor en la base de datos
-		const author = req.body;
-		const model = new AuthorModel(author);
-		const result = await model.save();
-		const _id = result._id;
+		const result = await createNewModel(AuthorModel, req);
 
 		res.status(201).json({
 			ok: true,
-			author: { id: _id, ...author },
+			author: result,
 			msg: "Se ha creado el autor",
 		});
-	} catch (error) {
+	} catch (error: any) {
 		getError(
 			res,
 			error,
@@ -27,7 +32,7 @@ export const newAuthor = async (req: Request, res: Response): Promise<void> => {
 //? GET - Recuperar lista de autores
 export const getAllAuthors = async (_req: Request, res: Response) => {
 	try {
-		const authors = await AuthorModel.find({});
+		const authors = await AuthorModel.find({}).exec();
 		res.status(201).json({
 			ok: true,
 			authors,
@@ -85,14 +90,16 @@ export const getAuthorsByName = async (req: Request, res: Response) => {
 export const updateAuthor = async (req: Request, res: Response) => {
 	const id = req.params.id;
 	try {
-		const author_before = await AuthorModel.findById(id);
-		const author = await AuthorModel.findByIdAndUpdate(id, req.body, {
-			new: true,
-		});
+		//? Comprobamos que no se intenta modificar la fecha de creacion o de modificacion manualmente
+		handleErrorAddedOrUpdatedModified(req);
+
+		//? Actualizamos el valor y recibimos el nuevo y el anterior
+		const { beforeModel, updatedModel } = await updateModel(AuthorModel, req);
+
 		res.status(201).json({
 			ok: true,
-			author_updated: author,
-			author_before,
+			author_updated: updatedModel,
+			author_before: beforeModel,
 			msg: "Se ha actualidado el autor con la id: " + id,
 		});
 	} catch (error) {
