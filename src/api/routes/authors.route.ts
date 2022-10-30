@@ -18,8 +18,9 @@ router.get("/test", testController);
 router.post("/new-author", newAuthor);
 router.get("/get-all-authors", getAllAuthors);
 router.get("/get-author-by-id/:id", getAuthorById);
-router.get("/get-authors-by-name/:name", getAuthorsByName);
+router.get("/get-authors-by-name", getAuthorsByName);
 router.put("/update-author/:id", updateAuthor);
+router.patch("/update-author/:id", updateAuthor);
 router.delete("/delete-author/:id", deleteAuthor);
 
 export const authorsRoutes = router;

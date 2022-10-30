@@ -20,25 +20,3 @@ export const handleErrorAddedOrUpdatedModified = (req: Request) => {
 		);
 };
 
-//? Creamos un nuevo modelo
-export const createNewModel = async (ModelRecived: any, req: Request) => {
-	const newModel = new ModelRecived(req.body);
-	console.log(newModel);
-	newModel.dates = {
-		added: new Date(),
-		lastUpdate: new Date(),
-	};
-	return await newModel.save();
-};
-
-//? Actualizamos el modelo y devolvemos el anterior y el nuevo actualizado
-export const updateModel = async (ModelRecived: any, req: Request) => {
-	const id = req.params.id;
-	const beforeModel = await ModelRecived.findById(id);
-	const updatedModel = await ModelRecived.findByIdAndUpdate(
-		id,
-		{ ...req.body, lastUpdate: new Date() },
-		{ new: true }
-	);
-	return { beforeModel, updatedModel };
-};
