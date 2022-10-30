@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
+import { TechsModel, TechsSchema } from "./techs.models";
 
-const AuthorSchema = new Schema({
+export const AuthorSchema = new Schema({
 	name: { type: String, required: true },
 	image: { type: String },
 	links: {
@@ -14,6 +15,7 @@ const AuthorSchema = new Schema({
 		tiktok: { type: String },
 		others: { type: [String] },
 	},
+	techs: { type: TechsSchema },
 });
 
 export const AuthorModel = model("Author", AuthorSchema);
