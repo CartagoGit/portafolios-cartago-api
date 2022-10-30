@@ -1,25 +1,10 @@
 import { model, Schema } from "mongoose";
 
-export interface Author {
-	id: string | number;
-	name: string;
-    image?: string;
-	links?: {
-		personal?: string;
-		udemy?: string;
-		twitter?: string;
-		linkedin?: string;
-		youtube?: string;
-		instagram?: string;
-		tiktok?: string;
-		others?: string[];
-	};
-}
-
 const AuthorSchema = new Schema({
 	name: { type: String, required: true },
-    image: { type: String },
+	image: { type: String },
 	links: {
+		type: Object,
 		personal: { type: String },
 		udemy: { type: String },
 		twitter: { type: String },

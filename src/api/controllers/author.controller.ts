@@ -3,41 +3,122 @@ import { getError } from "../../helpers/response.helper";
 import { AuthorModel } from "../../models/author.model";
 
 //? POST - Crear Autor
-export const newAuthor = async (
-	req: Request,
-	res: Response
-): Promise<Response> => {
+export const newAuthor = async (req: Request, res: Response): Promise<void> => {
 	try {
 		//? Guardamos el autor en la base de datos
-		const autor = req.body;
-		const model = new AuthorModel(autor);
-		model.save();
+		const author = req.body;
+		const model = new AuthorModel(author);
+		const result = await model.save();
+		const _id = result._id;
 
-		return res.status(201).json({
+		res.status(201).json({
 			ok: true,
-			autor: { autor },
+			author: { id: _id, ...author },
 			msg: "Se ha creado el autor",
 		});
 	} catch (error) {
-		return getError(
+		getError(
 			res,
 			error,
-			"No se ha podido crear el autor en la Base de Datos."
+			"No se ha podido crear un nuevo autor en la Base de Datos."
+		);
+	}
+};
+//? GET - Recuperar lista de autores
+export const getAllAuthors = async (_req: Request, res: Response) => {
+	try {
+		const authors = await AuthorModel.find({});
+		res.status(201).json({
+			ok: true,
+			authors,
+			msg: "Se ha recuperado la lista de autores",
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			"No se ha podido recuperar la lista de autores de la Base de Datos."
 		);
 	}
 };
 
 //? GET - Recuperar un author por Id
-export const getAuthor = (_req: Request, res: Response) => {
+export const getAuthorById = async (req: Request, res: Response) => {
 	try {
-	} catch (error) {}
+		const id = req.params.id;
+		const author = await AuthorModel.findById(id).exec();
+		res.status(201).json({
+			ok: true,
+			author,
+			msg: "Se ha recuperado el autor con Id: " + id,
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			"No se ha podido recuperar el autor con la ID de la Base de Datos."
+		);
+	}
+};
+//? GET - Recuperar autores que contengan en su Nombre
+export const getAuthorsByName = async (req: Request, res: Response) => {
+	const name = req.params.name;
+	try {
+		const authors = await AuthorModel.find({
+			name: { $regex: name, $options: "i" },
+		}).exec();
+		res.status(201).json({
+			ok: true,
+			authors,
+			msg: "Se ha recuperado los autores que en su nombre contienen: " + name,
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			`Ha habido un problema al intentar recuperar algun autor que contenga en su nombre: ${name}.`
+		);
+	}
 };
 
-//? GET - Recuperar lista de autores
-export const getAllAuthors = (_req: Request, res: Response) => {};
-
 //? PUT - Actualizar Autor
-export const updateAuthor = (_req: Request, res: Response) => {};
+export const updateAuthor = async (req: Request, res: Response) => {
+	const id = req.params.id;
+	try {
+		const author_before = await AuthorModel.findById(id);
+		const author = await AuthorModel.findByIdAndUpdate(id, req.body, {
+			new: true,
+		});
+		res.status(201).json({
+			ok: true,
+			author_updated: author,
+			author_before,
+			msg: "Se ha actualidado el autor con la id: " + id,
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			`Ha habido un problema al intentar actualizar el autor con id: ${id}.`
+		);
+	}
+};
 
 //? DELETE - Eliminar Autor
-export const deleteAuthor = (_req: Request, res: Response) => {};
+export const deleteAuthor = async (req: Request, res: Response) => {
+	const id = req.params.id;
+	try {
+		const author = await AuthorModel.findByIdAndDelete(id);
+		res.status(201).json({
+			ok: true,
+			author_deleted: author,
+			msg: "Se ha eliminado el autor con la id: " + id,
+		});
+	} catch (error) {
+		getError(
+			res,
+			error,
+			`Ha habido un problema al intentar eliminar el autor con id: ${id}.`
+		);
+	}
+};

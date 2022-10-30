@@ -7,9 +7,7 @@ import {
 	colors,
 	messageInitServidor,
 } from "../helpers/console-log.helper";
-
 import { createMongoConection } from "../db/mongo.db";
-import { setDb } from "../db/state.db";
 import { globalRoutes } from "../api/routes/global.route";
 
 //? Pintamos el logo
@@ -23,7 +21,7 @@ createMongoConection().subscribe({
 	next: (resp) => {
 		//? Guardamos la conexion correcta en nuestro variable de base de datos
 		const db = resp.connection;
-		setDb(db);
+
 		console.log(
 			colors.fg.green + "Connected successfully with MongoDB" + colors.reset
 		);
@@ -34,6 +32,9 @@ createMongoConection().subscribe({
 
 		//? Parseamos el body para convertir todo lo pasado en json
 		app.use(express.json());
+
+		//? Parseamos el servidor para que acepte x-www-form-urlencoded
+		app.use(express.urlencoded({ extended: true }));
 
 		//? Colocamos las rutas del servidor
 		app.use("/api", globalRoutes);

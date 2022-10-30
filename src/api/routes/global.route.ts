@@ -11,6 +11,5 @@ router.use("/projects", projectsRoutes);
 
 // ? Un test para comprobar que el server devuelve valor
 router.get("/test", testController);
-// router.options("/options");
 
 export const globalRoutes = router;
