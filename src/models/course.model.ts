@@ -1,18 +1,31 @@
 import { Schema, model } from "mongoose";
-import { AuthorSchema } from "./author.model";
-import { ProjectSchema } from "./project.model";
+
 import { DatesSchema } from "./schemas/dates.schema";
 
 export const CourseSchema = new Schema({
 	title: { type: String, required: true },
 	subtitle: { type: String, required: true },
-	description: { type: String },
-	author: { type: AuthorSchema, required: true },
 	link: { type: String, required: true },
+	description: { type: String },
 	githubCartago: { type: String },
 	githubCourse: { type: String },
 	linkCertificatePdf: { type: String },
-	projects: { type: [ProjectSchema], required: true, default: [] },
+
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: "Author",
+		required: true,
+	},
+	projects: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Project",
+			unique: true,
+			required: true,
+			default: [],
+		},
+	],
+
 	dates: { type: DatesSchema, required: true },
 });
 

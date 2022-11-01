@@ -3,24 +3,20 @@ import {
 	getError,
 	handleErrorAddedOrUpdatedModified,
 } from "../../helpers/response.helper";
-
-//$ Interfaces basicas y generales para los controllers
-export interface INameModel {
-	es_singular: string;
-	es_plural: string;
-	en_singular: string;
-	en_plural: string;
-}
+import {
+	INameModel,
+	IRequestModel,
+	IDataModel,
+} from "../interfaces/model.interfaces";
 
 //$ Controllador general de todos los cruds basicos
 
 //? POST -  Creamos un nuevo modelo
-export const createNewModel = async (
-	ModelRecived: any,
-	req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const createNewModel = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
+
 	try {
 		//? Comprobamos que no se pase ninguna fecha directamente por el body, que se cree automaticamente
 		handleErrorAddedOrUpdatedModified(req);
@@ -51,12 +47,10 @@ export const createNewModel = async (
 };
 
 //? GET - Recuperar toda la lista de dicho modelo
-export const getAllModel = async (
-	ModelRecived: any,
-	_req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const getAllModel = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
 	try {
 		//? Buscamos todos los elementos
 		const results = await ModelRecived.find({}).exec();
@@ -77,17 +71,17 @@ export const getAllModel = async (
 		);
 	}
 };
+
 //? GET - Recuperar un modelo por su Id
-export const getModelById = async (
-	Model: any,
-	req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const getModelById = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
+
 	try {
 		//? Buscamos el elemento por su id
 		const id = req.params.id;
-		const result = await Model.findById(id).exec();
+		const result = await ModelRecived.findById(id).exec();
 		if (!result)
 			throw new Error(
 				"No se ha encontrado ningun " +
@@ -113,15 +107,13 @@ export const getModelById = async (
 };
 
 //? Get - Recuperar un modelo por su variable
-export const getModelByArgs = async (
-	Model: any,
-	req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const getModelByQuery = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
+
 	try {
-		if (!req.query || !typeof req.query === Model)
-			throw new Error("No hay ninguna query para buscar");
+		if (!req.query) throw new Error("No hay ninguna query para buscar");
 
 		//? Argumentos recibidos por el query
 		//! no son params
@@ -139,7 +131,7 @@ export const getModelByArgs = async (
 				[arg]: { $regex: req.query[arg], $options: "i" },
 			};
 		});
-		const results = await Model.find(objectToFind);
+		const results = await ModelRecived.find(objectToFind);
 
 		//? Respuestas
 		res.status(201).json({
@@ -162,13 +154,12 @@ export const getModelByArgs = async (
 	}
 };
 //? PUT - Actualizamos el modelo y devolvemos el anterior y el nuevo actualizado
-export const updateModel = async (
-	ModelRecived: any,
-	req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const updateModel = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
 	const id = req.params.id;
+
 	try {
 		//? Comprobamos que no se intenta modificar la fecha de creacion o de modificacion manualmente
 		handleErrorAddedOrUpdatedModified(req);
@@ -218,12 +209,10 @@ export const updateModel = async (
 };
 
 //? DELETE - Eliminamos el elemento del modelo con la id
-export const deleteModel = async (
-	ModelRecived: any,
-	req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const deleteModel = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
 	const id = req.params.id;
 	try {
 		const model = await ModelRecived.findByIdAndDelete(id);
@@ -248,12 +237,11 @@ export const deleteModel = async (
 
 //! DELETE - Elimina la coleccion del modelo entera - CUIDADO DE USAR
 
-export const deleteAllCollectionModel = async (
-	ModelRecived: any,
-	_req: Request,
-	res: Response,
-	nameModel: INameModel
-) => {
+export const deleteAllCollectionModel = async (req: Request, res: Response) => {
+	//? Sacamos la infromación añadida en el middleware de la request
+	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
+		.dataModel;
+
 	try {
 		//! Eliminamos toda la coleccion del modelo
 		const result = await ModelRecived.collection.drop();
@@ -271,4 +259,12 @@ export const deleteAllCollectionModel = async (
 			`Ha habido un problema al intentar eliminar la colección de ${nameModel.es_plural}.`
 		);
 	}
+};
+
+//? Un test para comprobar que la ruta funciona y se recibe el objeto del middleware
+export const testController = (req: Request, res: Response) => {
+	res.status(200).send({
+		dataModel: (req as IRequestModel).dataModel,
+		message: "Soy el test",
+	});
 };

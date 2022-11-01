@@ -8,7 +8,7 @@ import {
 	messageInitServidor,
 } from "../helpers/console-log.helper";
 import { createMongoConection } from "../db/mongo.db";
-import { globalRoutes } from "../api/routes/global.route";
+import { router } from "../api/routes/model.routes";
 
 //? Pintamos el logo
 console.log(colors.fg.blue + logoAscii + colors.reset);
@@ -37,7 +37,7 @@ createMongoConection().subscribe({
 		app.use(express.urlencoded({ extended: true }));
 
 		//? Colocamos las rutas del servidor
-		app.use("/api", globalRoutes);
+		app.use("/api", router);
 
 		//? Manejamos la respuesta en el resto de rutas
 		app.get("*", (_req, res) => {
