@@ -15,6 +15,7 @@ export const CourseSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Author",
 		required: true,
+		autopopulate: true,
 	},
 	projects: [
 		{
@@ -23,11 +24,12 @@ export const CourseSchema = new Schema({
 			unique: true,
 			required: true,
 			default: [],
+			autopopulate: true,
 		},
 	],
 
 	dates: { type: DatesSchema, required: true },
 });
+CourseSchema.plugin(require("mongoose-autopopulate"));
 
 export const CourseModel = model("Course", CourseSchema);
-

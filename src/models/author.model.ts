@@ -9,6 +9,16 @@ export const AuthorSchema = new Schema({
 	links: { type: LinksSchema },
 	techs: { type: TechsSchema },
 	dates: { type: DatesSchema, required: true },
+	courses: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Course",
+			unique: true,
+			default: [],
+			autopopulate: true,
+		},
+	],
 });
+AuthorSchema.plugin(require("mongoose-autopopulate"));
 
 export const AuthorModel = model("Author", AuthorSchema);
