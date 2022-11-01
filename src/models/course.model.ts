@@ -31,18 +31,3 @@ export const CourseSchema = new Schema({
 
 export const CourseModel = model("Course", CourseSchema);
 
-// export interface ICourse {
-//     _id: string | number;
-//     title: string;
-//     subtitle: string;
-//     description?: string;
-//     author?: IAuthor;
-//     link: string;
-//     github?: string;
-//     githubCourse?: string;
-//     linkCertificatePdf?: string;
-//     projects: IProject[];
-//     techs: () => ITechs; // unico // Devolver las techs de los proyectos
-//     dates: IDates;
-//     states: IStates;
-//   }

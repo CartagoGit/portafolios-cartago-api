@@ -1,12 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthorModel } from "../../models/author.model";
-import { CourseModel } from "../../models/course.model";
-import { ProjectModel } from "../../models/project.model";
-import {
-	INameModel,
-	IRequestModel,
-	IDataModel,
-} from "../interfaces/model.interfaces";
+import { dataModels } from "../data/data-models.data";
+import { IRequestModel, IDataModel } from "../interfaces/model.interfaces";
 
 //? Creamos un middleware que pasara la información del modelo a traves del request
 class ModelMiddleware {
@@ -28,48 +22,15 @@ class ModelMiddleware {
 
 	//? Desde aqui añadimos a cada request la información que deseamos
 	public Authors = (req: Request, res: Response, next: NextFunction) => {
-		const nameModel: INameModel = {
-			es_singular: "autor",
-			es_plural: "autores",
-			en_singular: "author",
-			en_plural: "authors",
-		};
-		const Model = AuthorModel;
-		const dataModel: IDataModel = {
-			nameModel,
-			Model,
-		};
-		this._Model(req as IRequestModel, res, next, dataModel);
+		this._Model(req as IRequestModel, res, next, dataModels.authors);
 	};
 
 	public Courses = (req: Request, res: Response, next: NextFunction) => {
-		const nameModel: INameModel = {
-			es_singular: "curso",
-			es_plural: "cursos",
-			en_singular: "course",
-			en_plural: "courses",
-		};
-		const Model = CourseModel;
-		const dataModel: IDataModel = {
-			nameModel,
-			Model,
-		};
-		this._Model(req as IRequestModel, res, next, dataModel);
+		this._Model(req as IRequestModel, res, next, dataModels.courses);
 	};
 
 	public Projects = (req: Request, res: Response, next: NextFunction) => {
-		const nameModel: INameModel = {
-			es_singular: "proyecto",
-			es_plural: "proyectos",
-			en_singular: "project",
-			en_plural: "projects",
-		};
-		const Model = ProjectModel;
-		const dataModel: IDataModel = {
-			nameModel,
-			Model,
-		};
-		this._Model(req as IRequestModel, res, next, dataModel);
+		this._Model(req as IRequestModel, res, next, dataModels.projects);
 	};
 }
 
