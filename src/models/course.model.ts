@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 
 import { DatesSchema } from "./schemas/dates.schema";
+import { ProjectModel } from "./project.model";
+import { AuthorModel } from "./author.model";
 
 export const CourseSchema = new Schema({
 	title: { type: String, required: true },
@@ -21,15 +23,56 @@ export const CourseSchema = new Schema({
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Project",
-			unique: true,
-			required: true,
-			default: [],
-			autopopulate: true,
 		},
 	],
 
 	dates: { type: DatesSchema, required: true },
 });
 CourseSchema.plugin(require("mongoose-autopopulate"));
+
+//? Triggers para realizar efecto cascada en los dependientes
+CourseSchema.post(
+	"findOneAndDelete",
+	{ document: false, query: true },
+	async function (doc, next) {
+		await ProjectModel.deleteMany({ course: doc._id });
+		await AuthorModel.updateOne(
+			{ _id: doc.author._id },
+			{ $pull: { courses: doc._id } }
+		);
+		next();
+	}
+);
+
+CourseSchema.post("save", async function (doc, next) {
+	console.log("Cursos save entra");
+	await AuthorModel.updateOne(
+		{ _id: doc.author._id },
+		{ $push: { courses: doc._id } },
+		{ new: true }
+	);
+	next();
+});
+
+//? Actualizamos el curso en los autores
+CourseSchema.post(
+	"findOneAndUpdate",
+	{ document: false, query: true },
+	async function (doc, next) {
+		//? Eliminamos el curso del autor en el que estaba
+		await AuthorModel.updateOne(
+			{ courses: doc._id },
+			{
+				$pull: { courses: doc._id },
+			}
+		);
+		//? Añadimos al nuevo autor
+		await AuthorModel.updateOne(
+			{ _id: doc.author._id },
+			{ $push: { courses: doc._id } }
+		);
+		next();
+	}
+);
 
 export const CourseModel = model("Course", CourseSchema);

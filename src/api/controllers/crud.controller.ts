@@ -3,11 +3,7 @@ import {
 	getError,
 	handleErrorAddedOrUpdatedModified,
 } from "../../helpers/response.helper";
-import {
-	INameModel,
-	IRequestModel,
-	IDataModel,
-} from "../interfaces/model.interfaces";
+import { IRequestModel, IDataModel } from "../interfaces/model.interfaces";
 
 //$ Controllador general de todos los cruds basicos
 
@@ -18,6 +14,8 @@ export const createNewModel = async (req: Request, res: Response) => {
 		.dataModel;
 
 	try {
+		if (!req.body)
+			throw Error("No se han recibido datos en el body de la petición");
 		//? Comprobamos que no se pase ninguna fecha directamente por el body, que se cree automaticamente
 		handleErrorAddedOrUpdatedModified(req);
 
@@ -27,7 +25,7 @@ export const createNewModel = async (req: Request, res: Response) => {
 			created: new Date(),
 			lastUpdate: new Date(),
 		};
-		const result = await await newModel.save();
+		const result = await newModel.save();
 
 		//? Respuestas
 		res.status(201).json({
@@ -161,19 +159,22 @@ export const updateModel = async (req: Request, res: Response) => {
 	const id = req.params.id;
 
 	try {
+		if (!req.body)
+			throw Error("No se han recibido datos en el body de la petición");
 		//? Comprobamos que no se intenta modificar la fecha de creacion o de modificacion manualmente
 		handleErrorAddedOrUpdatedModified(req);
 
 		//? Recuperamos el valor actual
 		const beforeModel = await ModelRecived.findById(id);
 		//? Creamos el objeto que va actualizar el modelo
-		const objectToUpdate = { ...req.body, dates: beforeModel.dates };
+		const objectToUpdate = { ...req.body, dates: beforeModel?.dates };
 
+		console.log(req.body);
 		//? Añadimos fecha de comienzo o completado si viene en el body; sino cogemos la que estaba, si no hay ninguna, pues undefined
 		objectToUpdate.dates.started =
-			req.body.dates.started || beforeModel.dates.started || undefined;
+			req.body.dates?.started || beforeModel?.dates?.started || undefined;
 		objectToUpdate.dates.finished =
-			req.body.dates.finished || beforeModel.dates.finished || undefined;
+			req.body.dates?.finished || beforeModel?.dates?.finished || undefined;
 
 		//? La fecha de creación siempre se debe mantener, por lo que cogemos siempre la que estaba
 		objectToUpdate.dates.created = beforeModel.dates.created;
@@ -197,7 +198,7 @@ export const updateModel = async (req: Request, res: Response) => {
 			[model_updated]: updatedModel,
 			[model_before]: beforeModel,
 			msg:
-				"Se ha actualidado el " + nameModel.es_singular + " con la id: " + id,
+				"Se ha actualizado el " + nameModel.es_singular + " con la id: " + id,
 		});
 	} catch (error) {
 		getError(
@@ -215,8 +216,16 @@ export const deleteModel = async (req: Request, res: Response) => {
 		.dataModel;
 	const id = req.params.id;
 	try {
+		//? Eliminamos el modelo
 		const model = await ModelRecived.findByIdAndDelete(id);
-
+		if (!model) {
+			throw new Error(
+				"No se ha encotrado ningun " +
+					nameModel.es_singular +
+					" con el id :" +
+					id
+			);
+		}
 		//? Creamos un nombre para devolverlo por la api
 		const model_deleted = nameModel.en_singular + "_deleted";
 

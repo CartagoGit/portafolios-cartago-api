@@ -12,6 +12,7 @@ export const dataModels: IDataModels = {
 			en_plural: "authors",
 		},
 		Model: AuthorModel,
+		typeModel: 'authors'
 	},
 	courses: {
 		nameModel: {
@@ -21,6 +22,7 @@ export const dataModels: IDataModels = {
 			en_plural: "courses",
 		},
 		Model: CourseModel,
+		typeModel: 'courses'
 	},
 	projects: {
 		nameModel: {
@@ -30,5 +32,6 @@ export const dataModels: IDataModels = {
 			en_plural: "projects",
 		},
 		Model: ProjectModel,
+		typeModel: "projects"
 	},
 };
