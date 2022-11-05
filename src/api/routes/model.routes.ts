@@ -37,7 +37,6 @@ router.get(
 	modelMiddleware.Authors,
 	(req: Request, res: Response) => {
 		try {
-			console.log((req as IRequestModel).dataModel);
 			res.status(500).send({
 				message: "Rula",
 				dataModel: (req as IRequestModel).dataModel,

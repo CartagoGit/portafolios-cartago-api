@@ -10,7 +10,8 @@ export const ProjectSchema = new Schema({
 	useTo: {
 		type: String,
 		required: true,
-		enum: ["Course", "Testing", "Own", "Teach"],
+		enum: ["Course", "Testing", "Own", "Teach", "Data"],
+		//* Proyecto creado para - Cursos, Testear, Propios, Enseñar, Guardar información
 	},
 	course: {
 		type: Schema.Types.ObjectId,
@@ -41,7 +42,6 @@ ProjectSchema.post(
 );
 
 ProjectSchema.post("save", async function (doc, next) {
-	console.log("Proyectos save entra");
 	const course = await CourseModel.findOneAndUpdate(
 		{ _id: doc.course?._id },
 		{ $push: { projects: doc._id } },

@@ -45,7 +45,6 @@ CourseSchema.post(
 );
 
 CourseSchema.post("save", async function (doc, next) {
-	console.log("Cursos save entra");
 	await AuthorModel.updateOne(
 		{ _id: doc.author._id },
 		{ $push: { courses: doc._id } },

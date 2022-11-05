@@ -168,8 +168,7 @@ export const updateModel = async (req: Request, res: Response) => {
 		const beforeModel = await ModelRecived.findById(id);
 		//? Creamos el objeto que va actualizar el modelo
 		const objectToUpdate = { ...req.body, dates: beforeModel?.dates };
-
-		console.log(req.body);
+	
 		//? Añadimos fecha de comienzo o completado si viene en el body; sino cogemos la que estaba, si no hay ninguna, pues undefined
 		objectToUpdate.dates.started =
 			req.body.dates?.started || beforeModel?.dates?.started || undefined;
