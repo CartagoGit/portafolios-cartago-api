@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import { colors } from "../../helpers/console-log.helper";
 
+
+//? Si estamos en desarrollo añadimos las variables de entorno al process.env con dotenv
 if (process.env.NODE_ENV === "development") {
 	const dotEnvResult = dotenv.config({
 		path: __dirname + "/.env",
