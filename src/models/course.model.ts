@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 import { DatesSchema } from "./schemas/dates.schema";
 import { ProjectModel } from "./project.model";
 import { AuthorModel } from "./author.model";
+import { TechsSchema } from "./schemas/techs.schema";
 
 export const CourseSchema = new Schema({
 	title: { type: String, required: true },
@@ -12,7 +13,7 @@ export const CourseSchema = new Schema({
 	githubCartago: { type: String },
 	githubCourse: { type: String },
 	linkCertificatePdf: { type: String },
-
+	
 	author: {
 		type: Schema.Types.ObjectId,
 		ref: "Author",
@@ -26,6 +27,7 @@ export const CourseSchema = new Schema({
 		},
 	],
 
+	techs: { type: TechsSchema },
 	dates: { type: DatesSchema, required: true },
 });
 CourseSchema.plugin(require("mongoose-autopopulate"));

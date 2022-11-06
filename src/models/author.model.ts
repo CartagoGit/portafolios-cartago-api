@@ -9,14 +9,14 @@ export const AuthorSchema = new Schema({
 	name: { type: String, required: true },
 	image: { type: String },
 	links: { type: LinksSchema },
-	techs: { type: TechsSchema },
-	dates: { type: DatesSchema, required: true },
 	courses: [
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Course",
 		},
 	],
+	techs: { type: TechsSchema },
+	dates: { type: DatesSchema, required: true },
 });
 AuthorSchema.plugin(require("mongoose-autopopulate"));
 

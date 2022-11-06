@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { CourseModel } from "./course.model";
 import { DatesSchema } from "./schemas/dates.schema";
+import { TechsSchema } from "./schemas/techs.schema";
 
 export const ProjectSchema = new Schema({
 	title: { type: String, required: true },
@@ -13,17 +14,18 @@ export const ProjectSchema = new Schema({
 		enum: ["Course", "Testing", "Own", "Teach", "Data"],
 		//* Proyecto creado para - Cursos, Testear, Propios, Enseñar, Guardar información
 	},
-	course: {
-		type: Schema.Types.ObjectId,
-		ref: "Course",
-		autopopulate: true,
-	},
 	author: {
 		type: Schema.Types.ObjectId,
 		ref: "Author",
 		autopopulate: true,
 	},
+	course: {
+		type: Schema.Types.ObjectId,
+		ref: "Course",
+		autopopulate: true,
+	},
 
+	techs: { type: TechsSchema },
 	dates: { type: DatesSchema, required: true },
 });
 ProjectSchema.plugin(require("mongoose-autopopulate"));
@@ -47,7 +49,8 @@ ProjectSchema.post("save", async function (doc, next) {
 		{ $push: { projects: doc._id } },
 		{ new: true }
 	);
-	doc.update({}, { author: course?.author });
+	await ProjectModel.updateOne({ _id: doc._id }, { author: course?.author });
+
 	next();
 });
 
