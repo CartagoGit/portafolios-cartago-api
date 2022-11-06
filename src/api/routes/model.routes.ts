@@ -6,6 +6,10 @@ import { modelMiddleware } from "../middlewares/model.middleware";
 import { testController } from "../controllers/crud.controller";
 import { dataModels } from "../data/data-models.data";
 
+/**
+ * ? Ruta con el middleware  que envia datos del modelo a traves de la request
+ * para decidir el path el modelo antes de pasarle las rutas finales del crud
+ */
 export const router = Router();
 
 //? hacemos las rutas programáticas
@@ -31,7 +35,7 @@ router.use(
 // ? Un test para comprobar que el server devuelve valor
 router.get("/test", modelMiddleware.Authors, testController);
 
-//? Un test para comprobar que funciona el middleware para pasar datos a traves del request
+//? Ruta de Test para comprobar que el middleware para pasar datos por la request funciona correctamente
 router.get(
 	"/test-model",
 	modelMiddleware.Authors,

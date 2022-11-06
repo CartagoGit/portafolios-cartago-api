@@ -1,5 +1,5 @@
 /**
- * Simple is object check.
+ * Comprueba si el argumento es un objeto.
  * @param item
  * @returns {boolean}
  */
@@ -10,11 +10,12 @@ export function isObject(item: any): boolean {
 }
 
 /**
- * Deep merge two objects.
+ * Deep merge de dos objetos.
  * @param target
  * @param source
+ * @returns {object}
  */
-export function mergeDeep(target: any, source: any) {
+export function mergeDeep(target: any, source: any): object {
 	if (isObject(target) && isObject(source)) {
 		for (const key in source) {
 			if (isObject(source[key])) {

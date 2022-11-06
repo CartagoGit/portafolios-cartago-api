@@ -3,6 +3,9 @@ import { CourseModel } from "../../models/course.model";
 import { ProjectModel } from "../../models/project.model";
 import { IDataModels } from "../interfaces/model.interfaces";
 
+/**
+ * ? Datos para enviar a traves de la request por un middleware para poder realizar las respuestas programáticas
+ */
 export const dataModels: IDataModels = {
 	authors: {
 		nameModel: {

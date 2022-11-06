@@ -7,7 +7,12 @@ import { IRequestModel, IDataModel } from "../interfaces/model.interfaces";
 
 //$ Controllador general de todos los cruds basicos
 
-//? POST -  Creamos un nuevo modelo
+
+/**
+ * ? POST -  Crea un nuevo modelo
+ * @param req 
+ * @param res 
+ */
 export const createNewModel = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -26,7 +31,6 @@ export const createNewModel = async (req: Request, res: Response) => {
 			lastUpdate: new Date(),
 		};
 		const result = await newModel.save();
-console.log(result);
 		//? Respuestas
 		res.status(201).json({
 			ok: true,
@@ -44,7 +48,11 @@ console.log(result);
 	}
 };
 
-//? GET - Recuperar toda la lista de dicho modelo
+/**
+ * ? GET - Recupera toda la lista de dicho modelo
+ * @param req 
+ * @param res 
+ */
 export const getAllModel = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -70,7 +78,11 @@ export const getAllModel = async (req: Request, res: Response) => {
 	}
 };
 
-//? GET - Recuperar un modelo por su Id
+/**
+ * ? GET - Recupera un modelo por su Id
+ * @param req 
+ * @param res 
+ */
 export const getModelById = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -104,7 +116,11 @@ export const getModelById = async (req: Request, res: Response) => {
 	}
 };
 
-//? Get - Recuperar un modelo por su variable
+/**
+ * ? GET - Recuperar los modelos que coindidan con los argumentos
+ * @param req 
+ * @param res 
+ */
 export const getModelByQuery = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -168,7 +184,12 @@ export const getModelByQuery = async (req: Request, res: Response) => {
 		);
 	}
 };
-//? PUT - Actualizamos el modelo y devolvemos el anterior y el nuevo actualizado
+
+/**
+ * ? PUT - Actualiza el modelo y devolve el anterior y el nuevo actualizado en la response
+ * @param req 
+ * @param res 
+ */
 export const updateModel = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -225,7 +246,11 @@ export const updateModel = async (req: Request, res: Response) => {
 	}
 };
 
-//? DELETE - Eliminamos el elemento del modelo con la id
+/**
+ * ? DELETE - Elimina el elemento del modelo con la id
+ * @param req 
+ * @param res 
+ */
 export const deleteModel = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -260,8 +285,11 @@ export const deleteModel = async (req: Request, res: Response) => {
 	}
 };
 
-//! DELETE - Elimina la coleccion del modelo entera - CUIDADO DE USAR
-
+/**
+ * ! DELETE - Elimina la coleccion del modelo entera - CUIDADO DE USAR
+ * @param req 
+ * @param res 
+ */
 export const deleteAllCollectionModel = async (req: Request, res: Response) => {
 	//? Sacamos la infromación añadida en el middleware de la request
 	const { Model: ModelRecived, nameModel }: IDataModel = (req as IRequestModel)
@@ -286,7 +314,12 @@ export const deleteAllCollectionModel = async (req: Request, res: Response) => {
 	}
 };
 
-//? Un test para comprobar que la ruta funciona y se recibe el objeto del middleware
+
+/**
+ * ? Test para comprobar que la ruta funciona y se recibe el objeto del middleware
+ * @param req 
+ * @param res 
+ */
 export const testController = (req: Request, res: Response) => {
 	res.status(200).send({
 		dataModel: (req as IRequestModel).dataModel,

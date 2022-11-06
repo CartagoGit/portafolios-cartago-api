@@ -2,7 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { dataModels } from "../data/data-models.data";
 import { IRequestModel, IDataModel } from "../interfaces/model.interfaces";
 
-//? Creamos un middleware que pasara la información del modelo a traves del request
+
+/**
+ * ? Clase con middleware que pasara la información de los modelos a traves del request
+ * @class ModelMiddleware
+ * @middleware Authors
+ * @middleware Courses
+ * @middleware Projects
+ */
 class ModelMiddleware {
 	private _Model = async (
 		req: IRequestModel,
@@ -15,7 +22,7 @@ class ModelMiddleware {
 			next();
 		} catch (error) {
 			res.status(500).send({
-				message: "Hubo un error al parsear la información en el middleware",
+				message: "Hubo un error al parsear la información en la request en el middleware",
 			});
 		}
 	};
@@ -34,4 +41,7 @@ class ModelMiddleware {
 	};
 }
 
+/**
+ * ? Exporta un nuevo objeto de la clase ModelMiddleware
+ */
 export const modelMiddleware = new ModelMiddleware();

@@ -28,4 +28,13 @@ router.delete("/delete/:id", deleteModel);
 //! CUIDADO DE USAR
 // router.delete("/delete-all", deleteAllCollection);
 
+/**
+ * ? Exporta el router con el crud básico
+ * @route "/create-new"
+ * @route "/get-all"
+ * @route "/get-by-id/:id"
+ * @route "/get-by-query"
+ * @route "/update/:id"
+ * @route "/delete/:id"
+ */
 export const crudRoutes = router;

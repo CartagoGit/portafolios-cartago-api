@@ -1,5 +1,8 @@
 import config from "../core/environments/config";
 
+/**
+ * ? Código de colores para consola en servidor 
+ */
 export const colors = {
 	reset: "\x1b[0m",
 	bright: "\x1b[1m",
@@ -33,6 +36,9 @@ export const colors = {
 	},
 };
 
+/**
+ * ? Texto en ASCII de Cartago
+ */
 export const logoAscii: Readonly<string> = `
 .oooooo.                          .                                  
 d8P'   Y8b                       .o8                                  
@@ -45,6 +51,9 @@ d8P'   Y8b                       .o8
                                                  "Y88888P'      
 `;
 
+/**
+ * ? Texto preset al inicial el servidor
+ */
 export const messageInitServidor: string = `
 	Server in mode ${colors.fg.cyan + config.NODE_ENV + colors.reset}
 	Running on ${colors.fg.magenta + config.HOST}:${
