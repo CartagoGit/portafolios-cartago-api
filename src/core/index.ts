@@ -54,11 +54,11 @@ createMongoConection().subscribe({
 		});
 		
 		//? Creamos la llamada al servidor
-		// app.listen(config.PORT as number, () => {
-		// 	//? Mensaje con los datos del environment
-		// 	console.log(messageInitServidor(config));
-		// 	console.log("");
-		// });
+		app.listen(config.PORT as number, () => {
+			//? Mensaje con los datos del environment
+			console.log(messageInitServidor(config));
+			console.log("");
+		});
 	},
 	error: (err) => {
 		console.log(colors.fg.red + "Error in conection with MongoDB");

@@ -12,6 +12,11 @@ const mongo_db_1 = require("../db/mongo.db");
 const model_routes_1 = require("../api/routes/model.routes");
 //? Pintamos el logo
 console.log(console_log_helper_1.colors.fg.blue + console_log_helper_1.logoAscii + console_log_helper_1.colors.reset);
+//? Controlamos que si no hay ninguna direccion en las variables de entorno para la base de datos, salte un error antes
+if (!config_1.default.MONGODB_CONNECT)
+    throw new Error(console_log_helper_1.colors.fg.red +
+        "No existe ninguna dirección para conectarse a la base de datos" +
+        console_log_helper_1.colors.reset);
 //? Creamos el servidor
 const app = (0, express_1.default)();
 //? Creamos la subscripcion a mongo para conectarnos a la BD
@@ -34,7 +39,7 @@ const app = (0, express_1.default)();
             res.send("There isn't any route for this endpoint");
         });
         //? Creamos la llamada al servidor
-        app.listen(config_1.default.PORT, config_1.default.HOST, () => {
+        app.listen(config_1.default.PORT, () => {
             //? Mensaje con los datos del environment
             console.log((0, console_log_helper_1.messageInitServidor)(config_1.default));
             console.log("");
