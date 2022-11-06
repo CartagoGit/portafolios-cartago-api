@@ -46,7 +46,7 @@ createMongoConection().subscribe({
 		});
 
 		//? Creamos la llamada al servidor
-		app.listen(config.PORT as number, config.HOST, () => {
+		app.listen(config.PORT as number, () => {
 			//? Mensaje con los datos del environment
 			console.log(messageInitServidor(config));
 			console.log("");
