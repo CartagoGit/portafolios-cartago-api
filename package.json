@@ -8,7 +8,7 @@
 		"tsc": "tsc",
 		"build": "set NODE_ENV=production&& npx tsc",
 		"dev": "set NODE_ENV=development&& npx nodemon",
-		"start": "set NODE_ENV=production&& npx ts-node src/core/index.ts --omit=dev "
+		"start": "set NODE_ENV=production&& npx src/core/index.ts --omit=dev "
 
 	},
 	"author": "Cartago <cv2cartago@gmail.com> (https://github.com/CartagoGit)",
