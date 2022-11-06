@@ -6,9 +6,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"tsc": "tsc",
-		"build": "set NODE_ENV=production&& npx tsc",
+		"build": "set NODE_ENV=production&& npx tsc", 
 		"dev": "set NODE_ENV=development&& npx nodemon",
-		"start": "set NODE_ENV=production&& node dist/core/index.js"
+		"start": "node dist/core/index.js"
 	},
 	"author": "Cartago <cv2cartago@gmail.com> (https://github.com/CartagoGit)",
 	"license": "MIT",
@@ -19,13 +19,13 @@
 		"helmet": "^6.0.0",
 		"mongoose": "^6.7.0",
 		"mongoose-autopopulate": "^0.16.1",
-		"rxjs": "^7.5.7",
+		"rxjs": "^7.5.7"
+	},
+	"devDependencies": {
 		"typescript": "^4.8.4",
 		"@types/cors": "^2.8.12",
 		"@types/express": "^4.17.14",
-		"@types/node": "^18.11.7"
-	},
-	"devDependencies": {
+		"@types/node": "^18.11.7",
 		"nodemon": "^2.0.20",
 		"ts-node": "^10.9.1"
 	},
