@@ -7,7 +7,9 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"tsc": "tsc",
 		"build": "set NODE_ENV=production&& npx tsc",
-		"dev": "set NODE_ENV=development&& npx nodemon"
+		"dev": "set NODE_ENV=development&& npx nodemon",
+		"start": "set NODE_ENV=development&& npx nodemon",
+
 	},
 	"author": "Cartago <cv2cartago@gmail.com> (https://github.com/CartagoGit)",
 	"license": "MIT",
