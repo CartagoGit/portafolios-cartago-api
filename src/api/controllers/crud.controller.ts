@@ -26,7 +26,7 @@ export const createNewModel = async (req: Request, res: Response) => {
 			lastUpdate: new Date(),
 		};
 		const result = await newModel.save();
-
+console.log(result);
 		//? Respuestas
 		res.status(201).json({
 			ok: true,

@@ -14,15 +14,10 @@ export const ProjectSchema = new Schema({
 		enum: ["Course", "Testing", "Own", "Teach", "Data"],
 		//* Proyecto creado para - Cursos, Testear, Propios, Enseñar, Guardar información
 	},
-	author: {
-		type: Schema.Types.ObjectId,
-		ref: "Author",
-		autopopulate: true,
-	},
 	course: {
 		type: Schema.Types.ObjectId,
 		ref: "Course",
-		autopopulate: true,
+		autopopulate: {maxDepth: 2},
 	},
 
 	techs: { type: TechsSchema },
@@ -43,14 +38,13 @@ ProjectSchema.post(
 	}
 );
 
+//? Al guardar actualizar añadir el proyecto al curso
 ProjectSchema.post("save", async function (doc, next) {
-	const course = await CourseModel.findOneAndUpdate(
+	await CourseModel.updateOne(
 		{ _id: doc.course?._id },
 		{ $push: { projects: doc._id } },
 		{ new: true }
 	);
-	await ProjectModel.updateOne({ _id: doc._id }, { author: course?.author });
-
 	next();
 });
 

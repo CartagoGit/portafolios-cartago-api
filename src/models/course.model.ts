@@ -18,12 +18,13 @@ export const CourseSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Author",
 		required: true,
-		autopopulate: true,
+		autopopulate: {maxDepth: 1},
 	},
 	projects: [
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Project",
+			autopopulate: {maxDepth: 1},
 		},
 	],
 
@@ -46,6 +47,7 @@ CourseSchema.post(
 	}
 );
 
+//? Al guardar añadir el curso al autor
 CourseSchema.post("save", async function (doc, next) {
 	await AuthorModel.updateOne(
 		{ _id: doc.author._id },

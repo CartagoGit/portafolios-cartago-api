@@ -13,13 +13,13 @@ export const AuthorSchema = new Schema({
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Course",
+			autopopulate: {maxDepth: 2},
 		},
 	],
 	techs: { type: TechsSchema },
 	dates: { type: DatesSchema, required: true },
 });
 AuthorSchema.plugin(require("mongoose-autopopulate"));
-
 
 //? Triggers para realizar efecto cascada en los dependientes
 AuthorSchema.pre(
