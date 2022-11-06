@@ -1,7 +1,5 @@
-import config from "../core/environments/config";
-
 /**
- * ? Código de colores para consola en servidor 
+ * ? Código de colores para consola en servidor
  */
 export const colors = {
 	reset: "\x1b[0m",
@@ -54,9 +52,11 @@ d8P'   Y8b                       .o8
 /**
  * ? Texto preset al inicial el servidor
  */
-export const messageInitServidor: string = `
+export const messageInitServidor = (config: any): string => {
+	return `
 	Server in mode ${colors.fg.cyan + config.NODE_ENV + colors.reset}
 	Running on ${colors.fg.magenta + config.HOST}:${
-	colors.fg.red + config.PORT + colors.reset
-} 
+		colors.fg.red + config.PORT + colors.reset
+	} 
 	from ${colors.fg.yellow + config.FROM + colors.reset}`;
+};

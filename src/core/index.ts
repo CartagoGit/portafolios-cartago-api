@@ -20,8 +20,8 @@ const app: Application = express();
 //? Creamos la subscripcion a mongo para conectarnos a la BD
 createMongoConection().subscribe({
 	next: (resp) => {
-		//? Guardamos la conexion correcta en nuestro variable de base de datos
-		const db = resp.connection;
+		// //? Guardamos la conexion correcta en nuestro variable de base de datos
+		// const db = resp.connection;
 
 		console.log(
 			colors.fg.green + "Connected successfully with MongoDB" + colors.reset
@@ -51,7 +51,7 @@ createMongoConection().subscribe({
 		//? Creamos la llamada al servidor
 		app.listen(config.PORT as number, config.HOST, () => {
 			//? Mensaje con los datos del environment
-			console.log(messageInitServidor);
+			console.log(messageInitServidor(config));
 			console.log("");
 		});
 	},
