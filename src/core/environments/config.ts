@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 const dotEnvResult = dotenv.config({
 	path:
 		__dirname +
-		"/.env" +
-		(process.env.NODE_ENV === "production" ? ".prod" : ""),
+		"/.env" 
+		// +
+		// (process.env.NODE_ENV === "production" ? ".prod" : ""),
 });
 if (dotEnvResult.error) {
 	throw dotEnvResult.error;
