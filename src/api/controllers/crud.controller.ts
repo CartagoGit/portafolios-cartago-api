@@ -111,35 +111,52 @@ export const getModelByQuery = async (req: Request, res: Response) => {
 		.dataModel;
 
 	try {
-		if (!req.query) throw new Error("No hay ninguna query para buscar");
-
 		//? Argumentos recibidos por el query
 		//! no son params
-		const args = req.query;
-		if (!args)
+		const query = req.query;
+		if (!query || Object.keys(query).length === 0)
 			throw new Error(
 				"No existen las query en el modelo de " + nameModel.es_singular
 			);
 
 		//? Asignamos cada query en un objeto que usaremos para buscar en el modelo
 		let objectToFind = {};
-		Object.keys(args).forEach((arg) => {
-			objectToFind = {
-				...objectToFind,
-				[arg]: { $regex: req.query[arg], $options: "i" },
-			};
+		Object.keys(query).forEach((keyQuery) => {
+			//? Comprobamos que alguna de los argumentos del query exista en el modelo
+			const model = ModelRecived.schema.obj;
+			Object.keys(model).forEach((keyModel) => {
+				if (keyModel === keyQuery && query[keyQuery] !== "") {
+					//?Asignamos el objeto con los parametros a buscar
+					objectToFind = {
+						...objectToFind,
+						[keyQuery]: { $regex: query[keyQuery], $options: "i" },
+					};
+				}
+			});
 		});
-		const results = await ModelRecived.find(objectToFind);
+
+		//? Si el objeto a buscar esta vacio, es que no hay querys que coincidan con el modelo o que sean posibles
+		if (Object.keys(objectToFind).length === 0)
+			throw new Error(
+				"Ninguna de las query coinciden con las key del modelo " +
+					nameModel.es_singular +
+					". Se intentó buscar la siguiente query: " +
+					query
+			);
+
+		const results = await ModelRecived.find(objectToFind).setOptions({
+			strictQuery: true,
+		});
 
 		//? Respuestas
 		res.status(201).json({
 			ok: true,
 			[nameModel.en_plural]: results,
 			msg:
-				"Se ha recuperado los " +
+				"Se han recuperado los " +
 				nameModel.es_plural +
 				" que contienen: " +
-				JSON.stringify(req.query),
+				JSON.stringify(query),
 		});
 	} catch (error) {
 		getError(
@@ -168,7 +185,7 @@ export const updateModel = async (req: Request, res: Response) => {
 		const beforeModel = await ModelRecived.findById(id);
 		//? Creamos el objeto que va actualizar el modelo
 		const objectToUpdate = { ...req.body, dates: beforeModel?.dates };
-	
+
 		//? Añadimos fecha de comienzo o completado si viene en el body; sino cogemos la que estaba, si no hay ninguna, pues undefined
 		objectToUpdate.dates.started =
 			req.body.dates?.started || beforeModel?.dates?.started || undefined;
