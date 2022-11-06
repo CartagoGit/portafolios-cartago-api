@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logoAscii = exports.colors = void 0;
+exports.messageInitServidor = exports.logoAscii = exports.colors = void 0;
+/**
+ * ? Código de colores para consola en servidor
+ */
 exports.colors = {
     reset: "\x1b[0m",
     bright: "\x1b[1m",
@@ -32,6 +35,9 @@ exports.colors = {
         crimson: "\x1b[48m",
     },
 };
+/**
+ * ? Texto en ASCII de Cartago
+ */
 exports.logoAscii = `
 .oooooo.                          .                                  
 d8P'   Y8b                       .o8                                  
@@ -43,3 +49,13 @@ d8P'   Y8b                       .o8
                                                  d"     YD            
                                                  "Y88888P'      
 `;
+/**
+ * ? Texto preset al inicial el servidor
+ */
+const messageInitServidor = (config) => {
+    return `
+	Server in mode ${exports.colors.fg.cyan + config.NODE_ENV + exports.colors.reset}
+	Running on ${exports.colors.fg.magenta + config.HOST}:${exports.colors.fg.red + config.PORT + exports.colors.reset} 
+	from ${exports.colors.fg.yellow + config.FROM + exports.colors.reset}`;
+};
+exports.messageInitServidor = messageInitServidor;
