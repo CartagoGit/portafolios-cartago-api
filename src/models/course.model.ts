@@ -13,18 +13,18 @@ export const CourseSchema = new Schema({
 	githubCartago: { type: String },
 	githubCourse: { type: String },
 	linkCertificatePdf: { type: String },
-	
+
 	author: {
 		type: Schema.Types.ObjectId,
 		ref: "Author",
 		required: true,
-		autopopulate: {maxDepth: 1},
+		autopopulate: { maxDepth: 1 },
 	},
 	projects: [
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Project",
-			autopopulate: {maxDepth: 1},
+			autopopulate: { maxDepth: 1 },
 		},
 	],
 
