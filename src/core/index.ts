@@ -14,6 +14,14 @@ import { router } from "../api/routes/model.routes";
 //? Pintamos el logo
 console.log(colors.fg.blue + logoAscii + colors.reset);
 
+//? Controlamos que si no hay ninguna direccion en las variables de entorno para la base de datos, salte un error antes
+if (!config.MONGODB_CONNECT)
+	throw new Error(
+		colors.fg.red +
+			"No existe ninguna dirección para conectarse a la base de datos" +
+			colors.reset
+	);
+
 //? Creamos el servidor
 const app: Application = express();
 
