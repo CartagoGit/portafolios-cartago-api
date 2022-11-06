@@ -8,6 +8,7 @@ const dotEnvResult = dotenv.config({
 		// (process.env.NODE_ENV === "production" ? ".prod" : ""),
 });
 if (dotEnvResult.error) {
+	console.log("Get an error looking for the environment variables");
 	throw dotEnvResult.error;
 }
 

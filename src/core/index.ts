@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
+import helmet from "helmet";
 
 import config from "./environments/config";
 import {
@@ -29,6 +30,9 @@ createMongoConection().subscribe({
 		//$ Una vez nos hemos conectado a mongoDB
 		//? Activamos los cors en nuestro servidor
 		app.use(cors());
+
+		//? Activamos proteccion para vulnerabilidades conocidas de las web
+		app.use(helmet());
 
 		//? Parseamos el body para convertir todo lo pasado en json
 		app.use(express.json());
