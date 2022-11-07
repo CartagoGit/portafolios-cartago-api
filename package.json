@@ -3,10 +3,11 @@
 	"version": "1.0.0",
 	"description": "Api para el portafolios de Mario Cabrero Volarich",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"tsc": "tsc",
-		"build": "set NODE_ENV=production&& npx tsc", 
+		"build": "set NODE_ENV=production&& npx tsc",
 		"dev": "set NODE_ENV=development&& npx nodemon",
 		"start": "node dist/core/index.js"
 	},
