@@ -50,3 +50,4 @@ const app = (0, express_1.default)();
         console.log(err + console_log_helper_1.colors.reset);
     },
 });
+module.exports = app;

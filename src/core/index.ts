@@ -65,3 +65,5 @@ createMongoConection().subscribe({
 		console.log(err + colors.reset);
 	},
 });
+
+module.exports = app;
