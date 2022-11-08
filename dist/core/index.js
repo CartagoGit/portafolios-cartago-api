@@ -19,6 +19,9 @@ if (!config_1.default.MONGODB_CONNECT)
         console_log_helper_1.colors.reset);
 //? Creamos el servidor
 const app = (0, express_1.default)();
+//? Mensaje con los datos del environment
+console.log((0, console_log_helper_1.messageInitServidor)(config_1.default));
+console.log("");
 //? Creamos la subscripcion a mongo para conectarnos a la BD
 (0, mongo_db_1.createMongoConection)().subscribe({
     next: (_resp) => {
@@ -32,18 +35,27 @@ const app = (0, express_1.default)();
         app.use(express_1.default.json());
         //? Parseamos el servidor para que acepte x-www-form-urlencoded
         app.use(express_1.default.urlencoded({ extended: true }));
+        app.get("/", (_req, res) => {
+            res.status(201).json({
+                ok: false,
+                message: "Home page!",
+                error: "That page isn't an api endpoint",
+            });
+        });
         //? Colocamos las rutas del servidor
         app.use("/api", model_routes_1.router);
         //? Manejamos la respuesta en el resto de rutas
         app.get("*", (_req, res) => {
-            res.send("There isn't any route for this endpoint");
+            res.status(201).json({
+                ok: false,
+                message: "There isn't any route for this endpoint",
+                error: "That page isn't an api endpoint",
+            });
         });
         //? Creamos la llamada al servidor
-        app.listen(config_1.default.PORT, () => {
-            //? Mensaje con los datos del environment
-            console.log((0, console_log_helper_1.messageInitServidor)(config_1.default));
-            console.log("");
-        });
+        // if (config.NODE_ENV === "environment") {
+        app.listen(config_1.default.PORT, () => { });
+        // }
     },
     error: (err) => {
         console.log(console_log_helper_1.colors.fg.red + "Error in conection with MongoDB");

@@ -25,6 +25,10 @@ if (!config.MONGODB_CONNECT)
 //? Creamos el servidor
 const app: Application = express();
 
+//? Mensaje con los datos del environment
+console.log(messageInitServidor(config));
+console.log("");
+
 //? Creamos la subscripcion a mongo para conectarnos a la BD
 createMongoConection().subscribe({
 	next: (_resp) => {
@@ -45,20 +49,29 @@ createMongoConection().subscribe({
 		//? Parseamos el servidor para que acepte x-www-form-urlencoded
 		app.use(express.urlencoded({ extended: true }));
 
+		app.get("/", (_req, res) => {
+			res.status(201).json({
+				ok: false,
+				message: "Home page!",
+				error: "That page isn't an api endpoint",
+			});
+		});
 		//? Colocamos las rutas del servidor
 		app.use("/api", router);
 
 		//? Manejamos la respuesta en el resto de rutas
 		app.get("*", (_req, res) => {
-			res.send("There isn't any route for this endpoint");
+			res.status(201).json({
+				ok: false,
+				message: "There isn't any route for this endpoint",
+				error: "That page isn't an api endpoint",
+			});
 		});
-		
+
 		//? Creamos la llamada al servidor
-		app.listen(config.PORT as number, () => {
-			//? Mensaje con los datos del environment
-			console.log(messageInitServidor(config));
-			console.log("");
-		});
+		// if (config.NODE_ENV === "environment") {
+		app.listen(config.PORT as number, () => {});
+		// }
 	},
 	error: (err) => {
 		console.log(colors.fg.red + "Error in conection with MongoDB");
