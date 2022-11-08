@@ -2,3 +2,5 @@
 
 /src/core/environments/.env
 /src/core/environments/.env.prod
+
+/.deprecated
